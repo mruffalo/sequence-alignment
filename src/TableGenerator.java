@@ -5,6 +5,8 @@ public class TableGenerator
 	 */
 	public static void main(String[] args)
 	{
-		AlignmentMatrix matrix = new AlignmentMatrix(3, 5);
+		AlignmentScoringSystem system = new AlignmentScoringSystem(0, -2, 2, -1);
+		AlignmentMatrix matrix = new AlignmentMatrix(system, "GAACTG", "GATAGCAATG");
+		System.out.println(matrix);
 	}
 }

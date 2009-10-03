@@ -1,4 +1,4 @@
 public enum PointerDirection
 {
-	NORTH, WEST, NORTH_WEST
+	UP, LEFT, UP_LEFT
 }
