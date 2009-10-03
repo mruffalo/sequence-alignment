@@ -1,4 +1,3 @@
-
 public class TableGenerator
 {
 	/**
@@ -6,6 +5,6 @@ public class TableGenerator
 	 */
 	public static void main(String[] args)
 	{
-		// TODO Auto-generated method stub
+		AlignmentMatrix matrix = new AlignmentMatrix(3, 5);
 	}
 }
