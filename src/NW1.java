@@ -1,7 +1,7 @@
 public class NW1
 {
 	public static final int gapscore = -2;
-	public static final int matchscore = 4;
+	public static final int matchscore = 2;
 	public static final int mismatchscore = -1;
 	private String x;
 	private String y;
@@ -58,18 +58,10 @@ public class NW1
 	}
 	public void print3(int x)
 	{
-		String s = Integer.toString(x);
-		if (s.length() == 1)
+		String string = String.format("$%3d$ & ", x);
+		if (string.length() == 8)
 		{
-			System.out.print("  " + s);
-		}
-		else if (s.length() == 2)
-		{
-			System.out.print(" " + s);
-		}
-		else if (s.length() == 3)
-		{
-			System.out.print(s);
+			System.out.print(string);
 		}
 		else
 		{
