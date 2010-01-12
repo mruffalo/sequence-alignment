@@ -9,50 +9,94 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.*;
 
-public class SequenceAlignmentGui
+public class SequenceAlignmentGui extends JFrame
 {
-	private JFrame frame;
+	private JTextField sequence1;
+	private JTextField sequence2;
+	private JSpinner matchSpinner;
+	private JSpinner mismatchSpinner;
+	private JSpinner gapStartSpinner;
+	private JSpinner gapContinueSpinner;
 	
 	public SequenceAlignmentGui()
 	{
-		frame = new JFrame("Sequence Alignment");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Sequence Alignment");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		
 		GridBagConstraints gbc = new GridBagConstraints();
 		Insets two = new Insets(2, 2, 2, 2);
 		gbc.insets = two;
+		gbc.weightx = 0.4;
 		gbc.fill = GridBagConstraints.BOTH;
 		panel.add(getSequencesPanel(), gbc);
 		
 		gbc.gridx = 1;
+		gbc.weightx = 0.6;
 		panel.add(getScoringPanel(), gbc);
 		
 		gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.gridwidth = 2;
 		gbc.gridy = 1;
+		gbc.weightx = 1.0;
+		panel.add(getSettingsPanel(), gbc);
+		
+		gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.gridwidth = 2;
+		gbc.gridy = 2;
+		gbc.weightx = 1.0;
+		gbc.weighty = 0.7;
 		gbc.insets = two;
 		panel.add(getTable(), gbc);
 		
 		gbc = new GridBagConstraints();
-		frame.add(panel);
-		frame.pack();
-		frame.setVisible(true);
+		this.add(panel);
+		this.pack();
+		this.setVisible(true);
 	}
 	
 	private JComponent getSequencesPanel()
 	{
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createTitledBorder("Sequences"));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+		
+		JLabel seq1Label = new JLabel("Sequence 1");
+		panel.add(seq1Label);
+		
+		sequence1 = new JTextField("");
+		panel.add(sequence1);
+		
+		JLabel seq2Label = new JLabel("Sequence 2");
+		panel.add(seq2Label);
+		
+		sequence2 = new JTextField("");
+		panel.add(sequence2);
+		
 		return panel;
 	}
 	
 	private JComponent getScoringPanel()
 	{
 		JPanel panel = new JPanel();
+		panel.setLayout(new GridBagLayout());
 		panel.setBorder(BorderFactory.createTitledBorder("Scoring"));
+		
+		SpinnerNumberModel matchModel = new SpinnerNumberModel();
+		matchModel.setValue(2);
+		matchSpinner = new JSpinner(matchModel);
+		panel.add(matchSpinner);
+		
+		return panel;
+	}
+	
+	private JComponent getSettingsPanel()
+	{
+		JPanel panel = new JPanel();
+		
 		return panel;
 	}
 	
