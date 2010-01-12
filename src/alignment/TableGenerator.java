@@ -1,3 +1,4 @@
+package alignment;
 public class TableGenerator
 {
 	/**

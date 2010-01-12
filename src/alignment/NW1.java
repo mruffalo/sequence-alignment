@@ -1,3 +1,4 @@
+package alignment;
 public class NW1
 {
 	public static final int gapscore = -2;

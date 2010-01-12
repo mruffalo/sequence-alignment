@@ -1,3 +1,4 @@
+package alignment;
 public class AlignmentScoringSystem
 {
 	public final int gapStart;
