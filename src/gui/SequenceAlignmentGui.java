@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.event.ListDataListener;
 import javax.swing.table.JTableHeader;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -34,6 +35,7 @@ public class SequenceAlignmentGui extends JFrame
 		
 		gbc.gridx = 1;
 		gbc.weightx = 0.6;
+		gbc.fill = GridBagConstraints.BOTH;
 		panel.add(getScoringPanel(), gbc);
 		
 		gbc = new GridBagConstraints();
@@ -64,14 +66,20 @@ public class SequenceAlignmentGui extends JFrame
 		panel.setBorder(BorderFactory.createTitledBorder("Sequences"));
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		
+		panel.add(Box.createRigidArea(new Dimension(0, 4)));
+		
 		JLabel seq1Label = new JLabel("Sequence 1");
 		panel.add(seq1Label);
+		
+		panel.add(Box.createRigidArea(new Dimension(0, 4)));
 		
 		sequence1 = new JTextField("");
 		panel.add(sequence1);
 		
 		JLabel seq2Label = new JLabel("Sequence 2");
 		panel.add(seq2Label);
+		
+		panel.add(Box.createRigidArea(new Dimension(0, 4)));
 		
 		sequence2 = new JTextField("");
 		panel.add(sequence2);
@@ -85,10 +93,74 @@ public class SequenceAlignmentGui extends JFrame
 		panel.setLayout(new GridBagLayout());
 		panel.setBorder(BorderFactory.createTitledBorder("Scoring"));
 		
+		Insets two = new Insets(2, 2, 2, 2);
+		
+		GridBagConstraints gbc = new GridBagConstraints();
+		JLabel matchLabel = new JLabel("Match");
+		gbc.insets = two;
+		gbc.weightx = 0.4;
+		gbc.fill = GridBagConstraints.BOTH;
+		matchLabel.setMinimumSize(new Dimension(150, 0));
+		panel.add(matchLabel, gbc);
+		
 		SpinnerNumberModel matchModel = new SpinnerNumberModel();
 		matchModel.setValue(2);
 		matchSpinner = new JSpinner(matchModel);
-		panel.add(matchSpinner);
+		matchSpinner.setMinimumSize(new Dimension(50, 0));
+		gbc.gridx = 1;
+		gbc.weightx = 0.6;
+		panel.add(matchSpinner, gbc);
+		
+		gbc = new GridBagConstraints();
+		JLabel mismatchLabel = new JLabel("Mismatch");
+		gbc.gridy = 1;
+		gbc.insets = two;
+		gbc.weightx = 0.4;
+		gbc.fill = GridBagConstraints.BOTH;
+		mismatchLabel.setMinimumSize(new Dimension(150, 0));
+		panel.add(mismatchLabel, gbc);
+		
+		SpinnerNumberModel mismatchModel = new SpinnerNumberModel();
+		mismatchModel.setValue(-1);
+		mismatchSpinner = new JSpinner(mismatchModel);
+		mismatchSpinner.setMinimumSize(new Dimension(50, 0));
+		gbc.gridx = 1;
+		gbc.weightx = 0.6;
+		panel.add(mismatchSpinner, gbc);
+		
+		gbc = new GridBagConstraints();
+		JLabel gapStartLabel = new JLabel("Gap Start");
+		gbc.gridy = 2;
+		gbc.insets = two;
+		gbc.weightx = 0.4;
+		gbc.fill = GridBagConstraints.BOTH;
+		gapStartLabel.setMinimumSize(new Dimension(150, 0));
+		panel.add(gapStartLabel, gbc);
+		
+		SpinnerNumberModel gapStartModel = new SpinnerNumberModel();
+		gapStartModel.setValue(-2);
+		gapStartSpinner = new JSpinner(gapStartModel);
+		gapStartSpinner.setMinimumSize(new Dimension(50, 0));
+		gbc.gridx = 1;
+		gbc.weightx = 0.6;
+		panel.add(gapStartSpinner, gbc);
+		gbc = new GridBagConstraints();
+		
+		JLabel gapContinueLabel = new JLabel("Gap Continue");
+		gbc.gridy = 3;
+		gbc.insets = two;
+		gbc.weightx = 0.4;
+		gbc.fill = GridBagConstraints.BOTH;
+		gapContinueLabel.setMinimumSize(new Dimension(150, 0));
+		panel.add(gapContinueLabel, gbc);
+		
+		SpinnerNumberModel gapContinueModel = new SpinnerNumberModel();
+		gapStartModel.setValue(-2);
+		gapContinueSpinner = new JSpinner(gapContinueModel);
+		gapContinueSpinner.setMinimumSize(new Dimension(50, 0));
+		gbc.gridx = 1;
+		gbc.weightx = 0.6;
+		panel.add(gapContinueSpinner, gbc);
 		
 		return panel;
 	}
