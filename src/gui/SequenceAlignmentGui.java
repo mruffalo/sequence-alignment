@@ -79,7 +79,7 @@ public class SequenceAlignmentGui
 		@Override
 		public Object getElementAt(int index)
 		{
-			return string.substring(index, index);
+			return string.substring(index, index + 1);
 		}
 		
 		@Override
