@@ -18,6 +18,9 @@ public class SequenceAlignmentGui extends JFrame
 	private JSpinner mismatchSpinner;
 	private JSpinner gapStartSpinner;
 	private JSpinner gapContinueSpinner;
+	private JRadioButton nwButton;
+	private JRadioButton swButton;
+	private ButtonGroup alignmentTypeButtonGroup;
 	
 	public SequenceAlignmentGui()
 	{
@@ -168,7 +171,59 @@ public class SequenceAlignmentGui extends JFrame
 	private JComponent getSettingsPanel()
 	{
 		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
+		panel.add(Box.createHorizontalGlue());
 		
+		alignmentTypeButtonGroup = new ButtonGroup();
+		nwButton = new JRadioButton();
+		nwButton.setSelected(true);
+		alignmentTypeButtonGroup.add(nwButton);
+		panel.add(nwButton);
+		
+		JLabel nwLabel = new JLabel("Needleman-Wunch");
+		panel.add(nwLabel);
+		
+		swButton = new JRadioButton();
+		alignmentTypeButtonGroup.add(swButton);
+		panel.add(swButton);
+		
+		JLabel swLabel = new JLabel("Smith-Waterman");
+		swLabel.addMouseListener(new MouseListener()
+		{
+			@Override
+			public void mouseClicked(MouseEvent arg0)
+			{
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0)
+			{
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0)
+			{
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0)
+			{
+			}
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0)
+			{
+				ButtonModel o = alignmentTypeButtonGroup.getSelection();
+				for (Object o_ : o.getSelectedObjects())
+				{
+					System.out.println(o_);
+				}
+				System.out.println(o);
+			}
+		});
+		panel.add(swLabel);
+		
+		panel.add(Box.createHorizontalGlue());
 		return panel;
 	}
 	
