@@ -2,7 +2,9 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.event.ListDataListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -17,8 +19,8 @@ public class SequenceAlignmentGui extends JFrame
 	 */
 	private static final long serialVersionUID = 9035278001459282431L;
 	
-	private JTextField sequence1;
-	private JTextField sequence2;
+	private JTextField sequenceField1;
+	private JTextField sequenceFiled2;
 	private JSpinner matchSpinner;
 	private JSpinner mismatchSpinner;
 	private JSpinner gapStartSpinner;
@@ -26,6 +28,10 @@ public class SequenceAlignmentGui extends JFrame
 	private ButtonModel nwButtonModel;
 	private ButtonModel swButtonModel;
 	private ButtonGroup alignmentTypeButtonGroup;
+	private AlignmentTableModel tableModel;
+	private JTable table;
+	private String sequence1 = "";
+	private String sequence2 = "";
 	
 	public SequenceAlignmentGui()
 	{
@@ -81,16 +87,16 @@ public class SequenceAlignmentGui extends JFrame
 		
 		panel.add(Box.createRigidArea(new Dimension(0, 4)));
 		
-		sequence1 = new JTextField("");
-		panel.add(sequence1);
+		sequenceField1 = new JTextField("");
+		panel.add(sequenceField1);
 		
 		JLabel seq2Label = new JLabel("Sequence 2");
 		panel.add(seq2Label);
 		
 		panel.add(Box.createRigidArea(new Dimension(0, 4)));
 		
-		sequence2 = new JTextField("");
-		panel.add(sequence2);
+		sequenceFiled2 = new JTextField("");
+		panel.add(sequenceFiled2);
 		
 		return panel;
 	}
@@ -263,8 +269,57 @@ public class SequenceAlignmentGui extends JFrame
 	
 	private JComponent getTable()
 	{
-		JTable table = new JTable();
-		return table;
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.weightx = 1.0;
+		gbc.weighty = 1.0;
+		gbc.fill = GridBagConstraints.BOTH;
+		
+		table = new JTable();
+		tableModel = new AlignmentTableModel();
+		table.setModel(tableModel);
+		panel.add(table, gbc);
+		return panel;
+	}
+	
+	/**
+	 * TODO: Finish this
+	 */
+	void alignStrings()
+	{
+		sequence1 = sequenceField1.getText();
+		sequence2 = sequenceFiled2.getText();
+		tableModel.fireTableDataChanged();
+		table.repaint();
+	}
+	
+	private class AlignmentTableModel extends AbstractTableModel
+	{
+		@Override
+		public int getColumnCount()
+		{
+			return sequence1.length();
+		}
+		
+		@Override
+		public int getRowCount()
+		{
+			return sequence1.length();
+		}
+		
+		@Override
+		public Object getValueAt(int arg0, int arg1)
+		{
+			// TODO this
+			return "?";
+		}
+		
+		@Override
+		public String getColumnName(int columnIndex)
+		{
+			return sequence1.substring(columnIndex, columnIndex + 1);
+		}
 	}
 	
 	private static class AlignButtonActionListener implements ActionListener
@@ -279,7 +334,7 @@ public class SequenceAlignmentGui extends JFrame
 		@Override
 		public void actionPerformed(ActionEvent arg0)
 		{
-			JOptionPane.showMessageDialog(gui, "Would align sequences now");
+			gui.alignStrings();
 		}
 	}
 	
