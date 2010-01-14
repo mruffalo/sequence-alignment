@@ -1,22 +1,26 @@
 package alignment;
-public class NW1
+
+public class AlignmentCalculator
 {
-	public static final int gapscore = -2;
-	public static final int matchscore = 2;
-	public static final int mismatchscore = -1;
 	private String x;
 	private String y;
 	private int xlen, ylen;
 	private int[][] scoreArray;
 	private String xalig, yalig;
-	public NW1(String a, String b)
+	private boolean local;
+	private AlignmentScoringSystem scoring;
+	
+	public AlignmentCalculator(String a, String b, AlignmentScoringSystem scoring_, boolean local_)
 	{
 		x = a;
 		y = b;
 		xlen = x.length();
 		ylen = y.length();
 		scoreArray = new int[ylen + 1][xlen + 1];
+		local = local_;
+		scoring = scoring_;
 	}
+	
 	public void fillScoreArray()
 	{
 		int col, row;
@@ -24,11 +28,11 @@ public class NW1
 		int best;
 		for (col = 0; col <= xlen; col++)
 		{
-			scoreArray[0][col] = gapscore * col;
+			scoreArray[0][col] = localScore(scoring.gapContinue * col);
 		}
 		for (row = 0; row <= ylen; row++)
 		{
-			scoreArray[row][0] = gapscore * row;
+			scoreArray[row][0] = localScore(scoring.gapContinue * row);
 		}
 		for (row = 1; row <= ylen; row++)
 		{
@@ -36,14 +40,14 @@ public class NW1
 			{
 				if (x.charAt(col - 1) == y.charAt(row - 1))
 				{
-					northwest = scoreArray[row - 1][col - 1] + matchscore;
+					northwest = localScore(scoreArray[row - 1][col - 1] + scoring.match);
 				}
 				else
 				{
-					northwest = scoreArray[row - 1][col - 1] + mismatchscore;
+					northwest = localScore(scoreArray[row - 1][col - 1] + scoring.mismatch);
 				}
-				west = scoreArray[row][col - 1] + gapscore;
-				north = scoreArray[row - 1][col] + gapscore;
+				west = localScore(scoreArray[row][col - 1] + scoring.gapContinue);
+				north = localScore(scoreArray[row - 1][col] + scoring.gapContinue);
 				best = northwest;
 				if (north > best)
 				{
@@ -57,6 +61,7 @@ public class NW1
 			}
 		}
 	}
+	
 	public void print3(int x)
 	{
 		String string = String.format("$%3d$ & ", x);
@@ -69,6 +74,7 @@ public class NW1
 			System.out.print("***");
 		}
 	}
+	
 	public void printArray()
 	{
 		for (int row = 0; row < scoreArray.length; row++)
@@ -80,6 +86,7 @@ public class NW1
 			System.out.println();
 		}
 	}
+	
 	public void setAlignment()
 	{
 		int row = ylen;
@@ -88,13 +95,13 @@ public class NW1
 		yalig = "";
 		while ((col > 0) || (row > 0))
 		{
-			if ((row > 0) && (scoreArray[row][col] == scoreArray[row - 1][col] + gapscore))
+			if ((row > 0) && (scoreArray[row][col] == scoreArray[row - 1][col] + scoring.gapContinue))
 			{
 				xalig = "-" + xalig;
 				yalig = y.charAt(row - 1) + yalig;
 				row--;
 			}
-			else if ((col > 0) && (scoreArray[row][col] == scoreArray[row][col] + gapscore))
+			else if ((col > 0) && (scoreArray[row][col] == scoreArray[row][col] + scoring.gapContinue))
 			{
 				xalig = x.charAt(col - 1) + xalig;
 				yalig = "-" + yalig;
@@ -109,17 +116,30 @@ public class NW1
 			}
 		}
 	}
+	
 	public void printAlignment()
 	{
 		System.out.println(xalig);
 		System.out.println(yalig);
 	}
+	
+	public int getValue(int i, int j)
+	{
+		return scoreArray[j][i];
+	}
+	
+	private int localScore(int i)
+	{
+		return (local && i < 0) ? 0 : i;
+	}
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args)
 	{
-		NW1 nw1 = new NW1(args[0], args[1]);
+		AlignmentScoringSystem scoring = new AlignmentScoringSystem(0, -1, 2, -1);
+		AlignmentCalculator nw1 = new AlignmentCalculator(args[0], args[1], scoring, false);
 		nw1.fillScoreArray();
 		nw1.printArray();
 		nw1.setAlignment();

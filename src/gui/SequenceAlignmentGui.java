@@ -3,6 +3,8 @@ package gui;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
+import alignment.AlignmentCalculator;
+import alignment.AlignmentScoringSystem;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -31,6 +33,7 @@ public class SequenceAlignmentGui extends JFrame
 	private String sequence1 = "ACTAGCATA";
 	private String sequence2 = "TTACCGA";
 	private JList rowHeader;
+	private AlignmentCalculator alignment;
 	
 	public SequenceAlignmentGui()
 	{
@@ -291,14 +294,19 @@ public class SequenceAlignmentGui extends JFrame
 		sequence1 = sequenceField1.getText();
 		sequence2 = sequenceFiled2.getText();
 		
-		if (alignmentTypeButtonGroup.getSelection() == nwButtonModel)
+		boolean local = false;
+		if (alignmentTypeButtonGroup.getSelection() == swButtonModel)
 		{
-			System.out.println("Needleman-Wunch alignment selected");
+			local = true;
 		}
-		else if (alignmentTypeButtonGroup.getSelection() == swButtonModel)
-		{
-			System.out.println("Smith-Waterman alignment selected");
-		}
+		
+		int gapStart = (Integer) gapStartSpinner.getValue();
+		int gapContinue = (Integer) gapContinueSpinner.getValue();
+		int match = (Integer) matchSpinner.getValue();
+		int mismatch = (Integer) mismatchSpinner.getValue();
+		AlignmentScoringSystem scoring = new AlignmentScoringSystem(gapStart, gapContinue, match, mismatch);
+		alignment = new AlignmentCalculator(sequence1, sequence2, scoring, local);
+		alignment.fillScoreArray();
 		
 		rowHeader.repaint();
 		tableModel.fireTableStructureChanged();
@@ -324,10 +332,16 @@ public class SequenceAlignmentGui extends JFrame
 		}
 		
 		@Override
-		public Object getValueAt(int arg0, int arg1)
+		public Object getValueAt(int row, int col)
 		{
-			// TODO this
-			return "?";
+			if (alignment != null)
+			{
+				return alignment.getValue(col, row);
+			}
+			else
+			{
+				return "?";
+			}
 		}
 		
 		@Override
