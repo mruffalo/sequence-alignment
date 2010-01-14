@@ -5,7 +5,7 @@ public class AlignmentCalculator
 	private String x;
 	private String y;
 	private int xlen, ylen;
-	private int[][] scoreArray;
+	private AlignmentElement[][] scoreArray;
 	private String xalig, yalig;
 	private boolean local;
 	private AlignmentScoringSystem scoring;
@@ -16,7 +16,14 @@ public class AlignmentCalculator
 		y = b;
 		xlen = x.length();
 		ylen = y.length();
-		scoreArray = new int[ylen + 1][xlen + 1];
+		scoreArray = new AlignmentElement[ylen + 1][xlen + 1];
+		for (int j = 0; j <= ylen; j++)
+		{
+			for (int i = 0; i <= xlen; i++)
+			{
+				scoreArray[j][i] = new AlignmentElement(null);
+			}
+		}
 		local = local_;
 		scoring = scoring_;
 	}
@@ -26,13 +33,14 @@ public class AlignmentCalculator
 		int col, row;
 		int northwest, north, west;
 		int best;
+		PointerDirection dir;
 		for (col = 0; col <= xlen; col++)
 		{
-			scoreArray[0][col] = localScore(scoring.gapContinue * col);
+			scoreArray[0][col].score = localScore(scoring.gapContinue * col);
 		}
 		for (row = 0; row <= ylen; row++)
 		{
-			scoreArray[row][0] = localScore(scoring.gapContinue * row);
+			scoreArray[row][0].score = localScore(scoring.gapContinue * row);
 		}
 		for (row = 1; row <= ylen; row++)
 		{
@@ -40,24 +48,28 @@ public class AlignmentCalculator
 			{
 				if (x.charAt(col - 1) == y.charAt(row - 1))
 				{
-					northwest = localScore(scoreArray[row - 1][col - 1] + scoring.match);
+					northwest = localScore(scoreArray[row - 1][col - 1].score + scoring.match);
 				}
 				else
 				{
-					northwest = localScore(scoreArray[row - 1][col - 1] + scoring.mismatch);
+					northwest = localScore(scoreArray[row - 1][col - 1].score + scoring.mismatch);
 				}
-				west = localScore(scoreArray[row][col - 1] + scoring.gapContinue);
-				north = localScore(scoreArray[row - 1][col] + scoring.gapContinue);
+				west = localScore(scoreArray[row][col - 1].score + scoring.gapContinue);
+				north = localScore(scoreArray[row - 1][col].score + scoring.gapContinue);
 				best = northwest;
+				dir = PointerDirection.NORTHWEST;
 				if (north > best)
 				{
+					dir = PointerDirection.NORTH;
 					best = north;
 				}
 				if (west > best)
 				{
+					dir = PointerDirection.WEST;
 					best = west;
 				}
-				scoreArray[row][col] = best;
+				scoreArray[row][col].score = best;
+				scoreArray[row][col].direction = dir;
 			}
 		}
 	}
@@ -81,7 +93,7 @@ public class AlignmentCalculator
 		{
 			for (int col = 0; col < scoreArray[row].length; col++)
 			{
-				print3(scoreArray[row][col]);
+				print3(scoreArray[row][col].score);
 			}
 			System.out.println();
 		}
@@ -95,13 +107,13 @@ public class AlignmentCalculator
 		yalig = "";
 		while ((col > 0) || (row > 0))
 		{
-			if ((row > 0) && (scoreArray[row][col] == scoreArray[row - 1][col] + scoring.gapContinue))
+			if ((row > 0) && (scoreArray[row][col].score == scoreArray[row - 1][col].score + scoring.gapContinue))
 			{
 				xalig = "-" + xalig;
 				yalig = y.charAt(row - 1) + yalig;
 				row--;
 			}
-			else if ((col > 0) && (scoreArray[row][col] == scoreArray[row][col] + scoring.gapContinue))
+			else if ((col > 0) && (scoreArray[row][col].score == scoreArray[row][col].score + scoring.gapContinue))
 			{
 				xalig = x.charAt(col - 1) + xalig;
 				yalig = "-" + yalig;
@@ -126,7 +138,7 @@ public class AlignmentCalculator
 	
 	public int getValue(int i, int j)
 	{
-		return scoreArray[j][i];
+		return scoreArray[j][i].score;
 	}
 	
 	private int localScore(int i)

@@ -36,18 +36,17 @@ public class AlignmentMatrix
 	
 	private void fillTable()
 	{
-		a[0][0] = new AlignmentElement(0, null);
-		a[1][0] = new AlignmentElement(scoringSystem.gapStart + scoringSystem.gapContinue, PointerDirection.UP);
+		a[1][0] = new AlignmentElement(scoringSystem.gapStart + scoringSystem.gapContinue, PointerDirection.NORTH);
 		for (int i = 2; i <= top.length(); i++)
 		{
 			a[i][0] = n[i][0] = w[i][0] = new AlignmentElement(a[i - 1][0].score + scoringSystem.gapContinue,
-				PointerDirection.UP);
+				PointerDirection.NORTH);
 		}
-		a[0][1] = new AlignmentElement(scoringSystem.gapStart + scoringSystem.gapContinue, PointerDirection.LEFT);
+		a[0][1] = new AlignmentElement(scoringSystem.gapStart + scoringSystem.gapContinue, PointerDirection.WEST);
 		for (int j = 2; j <= left.length(); j++)
 		{
 			a[0][j] = n[0][j] = w[0][j] = new AlignmentElement(a[0][j - 1].score + scoringSystem.gapContinue,
-				PointerDirection.LEFT);
+				PointerDirection.WEST);
 		}
 		for (int i = 0; i < top.length(); i++)
 		{
@@ -74,17 +73,5 @@ public class AlignmentMatrix
 		sb.append("|}");
 		out.println(sb.toString());
 		out.println("\\hline");
-	}
-	
-	private class AlignmentElement
-	{
-		public final int score;
-		public final PointerDirection direction;
-		
-		public AlignmentElement(int score_, PointerDirection direction_)
-		{
-			score = score_;
-			direction = direction_;
-		}
 	}
 }
