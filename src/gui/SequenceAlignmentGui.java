@@ -46,12 +46,12 @@ public class SequenceAlignmentGui extends JFrame
 		Insets two = new Insets(2, 2, 2, 2);
 		gbc.insets = two;
 		gbc.weightx = 0.4;
-		gbc.fill = GridBagConstraints.BOTH;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(getSequencesPanel(), gbc);
 		
 		gbc.gridx = 1;
 		gbc.weightx = 0.6;
-		gbc.fill = GridBagConstraints.BOTH;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(getScoringPanel(), gbc);
 		
 		gbc = new GridBagConstraints();
@@ -62,7 +62,7 @@ public class SequenceAlignmentGui extends JFrame
 		panel.add(getSettingsPanel(), gbc);
 		
 		gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.BOTH;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.gridwidth = 2;
 		gbc.gridy = 2;
 		gbc.weightx = 1.0;
@@ -71,6 +71,12 @@ public class SequenceAlignmentGui extends JFrame
 		panel.add(getTable(), gbc);
 		
 		gbc = new GridBagConstraints();
+		gbc.gridwidth = 2;
+		gbc.gridy = 3;
+		gbc.weightx = 1.0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		panel.add(getAlignmentPanel(), gbc);
+		
 		this.add(panel);
 		this.pack();
 		this.setVisible(true);
@@ -115,7 +121,7 @@ public class SequenceAlignmentGui extends JFrame
 		JLabel matchLabel = new JLabel("Match");
 		gbc.insets = two;
 		gbc.weightx = 0.4;
-		gbc.fill = GridBagConstraints.BOTH;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		matchLabel.setMinimumSize(new Dimension(150, 0));
 		panel.add(matchLabel, gbc);
 		
@@ -132,7 +138,7 @@ public class SequenceAlignmentGui extends JFrame
 		gbc.gridy = 1;
 		gbc.insets = two;
 		gbc.weightx = 0.4;
-		gbc.fill = GridBagConstraints.BOTH;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		mismatchLabel.setMinimumSize(new Dimension(150, 0));
 		panel.add(mismatchLabel, gbc);
 		
@@ -149,7 +155,7 @@ public class SequenceAlignmentGui extends JFrame
 		gbc.gridy = 2;
 		gbc.insets = two;
 		gbc.weightx = 0.4;
-		gbc.fill = GridBagConstraints.BOTH;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gapStartLabel.setMinimumSize(new Dimension(150, 0));
 		panel.add(gapStartLabel, gbc);
 		
@@ -166,7 +172,7 @@ public class SequenceAlignmentGui extends JFrame
 		gbc.gridy = 3;
 		gbc.insets = two;
 		gbc.weightx = 0.4;
-		gbc.fill = GridBagConstraints.BOTH;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gapContinueLabel.setMinimumSize(new Dimension(150, 0));
 		panel.add(gapContinueLabel, gbc);
 		
@@ -284,6 +290,18 @@ public class SequenceAlignmentGui extends JFrame
 		scrollPane.setRowHeaderView(rowHeader);
 		
 		return scrollPane;
+	}
+	
+	private JComponent getAlignmentPanel()
+	{
+		JPanel panel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		
+		JTextField alignField = new JTextField();
+		panel.add(alignField);
+		
+		return panel;
 	}
 	
 	/**
