@@ -30,8 +30,8 @@ public class SequenceAlignmentGui extends JFrame
 	private ButtonGroup alignmentTypeButtonGroup;
 	private AlignmentTableModel tableModel;
 	private JTable table;
-	private String sequence1 = "ACTAGCATA";
-	private String sequence2 = "TTACCGA";
+	private String sequence1 = "";
+	private String sequence2 = "";
 	private JList rowHeader;
 	private AlignmentCalculator alignment;
 	
@@ -160,8 +160,8 @@ public class SequenceAlignmentGui extends JFrame
 		gbc.gridx = 1;
 		gbc.weightx = 0.6;
 		panel.add(gapStartSpinner, gbc);
-		gbc = new GridBagConstraints();
 		
+		gbc = new GridBagConstraints();
 		JLabel gapContinueLabel = new JLabel("Gap Continue");
 		gbc.gridy = 3;
 		gbc.insets = two;
@@ -307,6 +307,8 @@ public class SequenceAlignmentGui extends JFrame
 		AlignmentScoringSystem scoring = new AlignmentScoringSystem(gapStart, gapContinue, match, mismatch);
 		alignment = new AlignmentCalculator(sequence1, sequence2, scoring, local);
 		alignment.fillScoreArray();
+		alignment.setAlignment();
+		alignment.printAlignment();
 		
 		rowHeader.repaint();
 		tableModel.fireTableStructureChanged();
