@@ -121,6 +121,7 @@ public class AlignmentCalculator
 	{
 		System.out.println(xalig);
 		System.out.println(yalig);
+		System.out.println();
 	}
 	
 	public int getValue(int i, int j)
