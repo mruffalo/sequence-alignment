@@ -103,8 +103,8 @@ public class AlignmentCalculator
 	{
 		int row = y.length();
 		int col = x.length();
-		xalig = "";
-		yalig = "";
+		StringBuilder xb = new StringBuilder();
+		StringBuilder yb = new StringBuilder();
 		while ((col > 0) || (row > 0))
 		{
 			PointerDirection dir = scoreArray[row][col].direction;
@@ -122,24 +122,26 @@ public class AlignmentCalculator
 			}
 			if ((row > 0) && (scoreArray[row][col].score == scoreArray[row - 1][col].score + scoring.gapContinue))
 			{
-				xalig = "-" + xalig;
-				yalig = y.charAt(row - 1) + yalig;
+				xb.insert(0, "-");
+				yb.insert(0, y.charAt(row - 1));
 				row--;
 			}
 			else if ((col > 0) && (scoreArray[row][col].score == scoreArray[row][col].score + scoring.gapContinue))
 			{
-				xalig = x.charAt(col - 1) + xalig;
-				yalig = "-" + yalig;
+				xb.insert(0, x.charAt(col - 1));
+				yb.insert(0, "-");
 				col--;
 			}
 			else
 			{
-				xalig = x.charAt(col - 1) + xalig;
-				yalig = y.charAt(row - 1) + yalig;
+				xb.insert(0, x.charAt(col - 1));
+				yb.insert(0, y.charAt(row - 1));
 				col--;
 				row--;
 			}
 		}
+		xalig = xb.toString();
+		yalig = yb.toString();
 	}
 	
 	public void printAlignment()
