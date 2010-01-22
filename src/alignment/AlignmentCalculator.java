@@ -5,7 +5,7 @@ public class AlignmentCalculator
 	private String x;
 	private String y;
 	private AlignmentElement[][] scoreArray;
-	private String xalig, yalig;
+	private String xalig, align, yalig;
 	private boolean local;
 	private AlignmentScoringSystem scoring;
 	
@@ -104,6 +104,7 @@ public class AlignmentCalculator
 		int row = y.length();
 		int col = x.length();
 		StringBuilder xb = new StringBuilder();
+		StringBuilder ab = new StringBuilder();
 		StringBuilder yb = new StringBuilder();
 		while ((col > 0) || (row > 0))
 		{
@@ -123,30 +124,37 @@ public class AlignmentCalculator
 			if ((row > 0) && (scoreArray[row][col].score == scoreArray[row - 1][col].score + scoring.gapContinue))
 			{
 				xb.insert(0, "-");
+				ab.insert(0, "-");
 				yb.insert(0, y.charAt(row - 1));
 				row--;
 			}
 			else if ((col > 0) && (scoreArray[row][col].score == scoreArray[row][col].score + scoring.gapContinue))
 			{
 				xb.insert(0, x.charAt(col - 1));
+				ab.insert(0, "-");
 				yb.insert(0, "-");
 				col--;
 			}
 			else
 			{
-				xb.insert(0, x.charAt(col - 1));
-				yb.insert(0, y.charAt(row - 1));
+				char xc = x.charAt(col - 1);
+				char yc = y.charAt(row - 1);
+				xb.insert(0, xc);
+				ab.insert(0, (xc == yc) ? "|" : "X");
+				yb.insert(0, yc);
 				col--;
 				row--;
 			}
 		}
 		xalig = xb.toString();
+		align = ab.toString();
 		yalig = yb.toString();
 	}
 	
 	public void printAlignment()
 	{
 		System.out.println(xalig);
+		System.out.println(align);
 		System.out.println(yalig);
 		System.out.println();
 	}
