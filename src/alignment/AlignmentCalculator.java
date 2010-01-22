@@ -4,7 +4,6 @@ public class AlignmentCalculator
 {
 	private String x;
 	private String y;
-	private int xlen, ylen;
 	private AlignmentElement[][] scoreArray;
 	private String xalig, yalig;
 	private boolean local;
@@ -14,12 +13,10 @@ public class AlignmentCalculator
 	{
 		x = a;
 		y = b;
-		xlen = x.length();
-		ylen = y.length();
-		scoreArray = new AlignmentElement[ylen + 1][xlen + 1];
-		for (int j = 0; j <= ylen; j++)
+		scoreArray = new AlignmentElement[y.length() + 1][x.length() + 1];
+		for (int j = 0; j <= y.length(); j++)
 		{
-			for (int i = 0; i <= xlen; i++)
+			for (int i = 0; i <= x.length(); i++)
 			{
 				scoreArray[j][i] = new AlignmentElement(null);
 			}
@@ -34,17 +31,20 @@ public class AlignmentCalculator
 		int northwest, north, west;
 		int best;
 		PointerDirection dir;
-		for (col = 0; col <= xlen; col++)
+		scoreArray[0][0].score = 0;
+		for (col = 1; col <= x.length(); col++)
 		{
 			scoreArray[0][col].score = localScore(scoring.gapContinue * col);
+			scoreArray[0][col].direction = PointerDirection.WEST;
 		}
-		for (row = 0; row <= ylen; row++)
+		for (row = 1; row <= y.length(); row++)
 		{
 			scoreArray[row][0].score = localScore(scoring.gapContinue * row);
+			scoreArray[row][0].direction = PointerDirection.NORTH;
 		}
-		for (row = 1; row <= ylen; row++)
+		for (row = 1; row <= y.length(); row++)
 		{
-			for (col = 1; col <= xlen; col++)
+			for (col = 1; col <= x.length(); col++)
 			{
 				if (x.charAt(col - 1) == y.charAt(row - 1))
 				{
@@ -101,8 +101,8 @@ public class AlignmentCalculator
 	
 	public void setAlignment()
 	{
-		int row = ylen;
-		int col = xlen;
+		int row = y.length();
+		int col = x.length();
 		xalig = "";
 		yalig = "";
 		while ((col > 0) || (row > 0))
