@@ -99,6 +99,9 @@ public class AlignmentCalculator
 		}
 	}
 	
+	/**
+	 * XXX: Fix this for local alignment
+	 */
 	public void setAlignment()
 	{
 		int row = y.length();
@@ -112,38 +115,26 @@ public class AlignmentCalculator
 			switch (dir)
 			{
 				case NORTH:
-					// TODO this
+					xb.insert(0, "-");
+					ab.insert(0, "-");
+					yb.insert(0, y.charAt(row - 1));
+					row--;
 					break;
 				case WEST:
-					// TODO this
+					xb.insert(0, x.charAt(col - 1));
+					ab.insert(0, "-");
+					yb.insert(0, "-");
+					col--;
 					break;
 				case NORTHWEST:
-					// TODO this
+					char xc = x.charAt(col - 1);
+					char yc = y.charAt(row - 1);
+					xb.insert(0, xc);
+					ab.insert(0, (xc == yc) ? "|" : "X");
+					yb.insert(0, yc);
+					col--;
+					row--;
 					break;
-			}
-			if ((row > 0) && (scoreArray[row][col].score == scoreArray[row - 1][col].score + scoring.gapContinue))
-			{
-				xb.insert(0, "-");
-				ab.insert(0, "-");
-				yb.insert(0, y.charAt(row - 1));
-				row--;
-			}
-			else if ((col > 0) && (scoreArray[row][col].score == scoreArray[row][col].score + scoring.gapContinue))
-			{
-				xb.insert(0, x.charAt(col - 1));
-				ab.insert(0, "-");
-				yb.insert(0, "-");
-				col--;
-			}
-			else
-			{
-				char xc = x.charAt(col - 1);
-				char yc = y.charAt(row - 1);
-				xb.insert(0, xc);
-				ab.insert(0, (xc == yc) ? "|" : "X");
-				yb.insert(0, yc);
-				col--;
-				row--;
 			}
 		}
 		xalig = xb.toString();
