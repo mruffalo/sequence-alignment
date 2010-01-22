@@ -107,6 +107,19 @@ public class AlignmentCalculator
 		yalig = "";
 		while ((col > 0) || (row > 0))
 		{
+			PointerDirection dir = scoreArray[row][col].direction;
+			switch (dir)
+			{
+				case NORTH:
+					// TODO this
+					break;
+				case WEST:
+					// TODO this
+					break;
+				case NORTHWEST:
+					// TODO this
+					break;
+			}
 			if ((row > 0) && (scoreArray[row][col].score == scoreArray[row - 1][col].score + scoring.gapContinue))
 			{
 				xalig = "-" + xalig;
