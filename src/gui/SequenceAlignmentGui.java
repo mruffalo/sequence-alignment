@@ -19,8 +19,8 @@ public class SequenceAlignmentGui extends JFrame
 	 */
 	private static final long serialVersionUID = 9035278001459282431L;
 	
-	private JTextField sequenceField1;
-	private JTextField sequenceFiled2;
+	private JTextFieldUC sequenceField1;
+	private JTextFieldUC sequenceFiled2;
 	private JSpinner matchSpinner;
 	private JSpinner mismatchSpinner;
 	private JSpinner gapStartSpinner;
@@ -95,7 +95,7 @@ public class SequenceAlignmentGui extends JFrame
 		
 		panel.add(Box.createRigidArea(new Dimension(0, 4)));
 		
-		sequenceField1 = new JTextField(sequence1);
+		sequenceField1 = new JTextFieldUC(sequence1);
 		panel.add(sequenceField1);
 		
 		JLabel seq2Label = new JLabel("Sequence 2");
@@ -103,7 +103,7 @@ public class SequenceAlignmentGui extends JFrame
 		
 		panel.add(Box.createRigidArea(new Dimension(0, 4)));
 		
-		sequenceFiled2 = new JTextField(sequence2);
+		sequenceFiled2 = new JTextFieldUC(sequence2);
 		panel.add(sequenceFiled2);
 		
 		return panel;
