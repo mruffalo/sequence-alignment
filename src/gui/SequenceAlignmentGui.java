@@ -7,6 +7,7 @@ import alignment.AlignmentCalculator;
 import alignment.AlignmentScoringSystem;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -33,7 +34,7 @@ public class SequenceAlignmentGui extends JFrame
 	private String sequence1 = "";
 	private String sequence2 = "";
 	private JList rowHeader;
-	private JTextField alignField;
+	private JTextArea alignArea;
 	private AlignmentCalculator alignment;
 	
 	public SequenceAlignmentGui()
@@ -52,18 +53,17 @@ public class SequenceAlignmentGui extends JFrame
 		
 		gbc.gridx = 1;
 		gbc.weightx = 0.6;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(getScoringPanel(), gbc);
 		
 		gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.BOTH;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.gridwidth = 2;
 		gbc.gridy = 1;
 		gbc.weightx = 1.0;
 		panel.add(getSettingsPanel(), gbc);
 		
 		gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.fill = GridBagConstraints.BOTH;
 		gbc.gridwidth = 2;
 		gbc.gridy = 2;
 		gbc.weightx = 1.0;
@@ -300,8 +300,14 @@ public class SequenceAlignmentGui extends JFrame
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.weightx = 1.0;
 		
-		alignField = new JTextField();
-		panel.add(alignField);
+		alignArea = new JTextArea();
+		alignArea.setRows(3);
+		alignArea.setEditable(false);
+		Font f = Font.decode(Font.MONOSPACED);
+		System.out.println(f);
+		alignArea.setAlignmentX(CENTER_ALIGNMENT);
+		alignArea.setFont(f);
+		panel.add(alignArea, gbc);
 		
 		return panel;
 	}
@@ -328,7 +334,7 @@ public class SequenceAlignmentGui extends JFrame
 		alignment = new AlignmentCalculator(sequence1, sequence2, scoring, local);
 		alignment.fillScoreArray();
 		alignment.setAlignment();
-		alignField.setText(alignment.getAlignment());
+		alignArea.setText(alignment.getAlignment());
 		alignment.printAlignment();
 		
 		rowHeader.repaint();
