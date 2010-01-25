@@ -150,6 +150,20 @@ public class AlignmentCalculator
 		System.out.println();
 	}
 	
+	public String getAlignment()
+	{
+		StringBuilder sb = new StringBuilder();
+		String newline = System.getProperty("line.separator");
+		
+		sb.append(xalig);
+		sb.append(newline);
+		sb.append(align);
+		sb.append(newline);
+		sb.append(yalig);
+		
+		return sb.toString();
+	}
+	
 	public int getValue(int i, int j)
 	{
 		return scoreArray[j][i].score;

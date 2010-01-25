@@ -33,6 +33,7 @@ public class SequenceAlignmentGui extends JFrame
 	private String sequence1 = "";
 	private String sequence2 = "";
 	private JList rowHeader;
+	private JTextField alignField;
 	private AlignmentCalculator alignment;
 	
 	public SequenceAlignmentGui()
@@ -297,8 +298,9 @@ public class SequenceAlignmentGui extends JFrame
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 1.0;
 		
-		JTextField alignField = new JTextField();
+		alignField = new JTextField();
 		panel.add(alignField);
 		
 		return panel;
@@ -326,6 +328,7 @@ public class SequenceAlignmentGui extends JFrame
 		alignment = new AlignmentCalculator(sequence1, sequence2, scoring, local);
 		alignment.fillScoreArray();
 		alignment.setAlignment();
+		alignField.setText(alignment.getAlignment());
 		alignment.printAlignment();
 		
 		rowHeader.repaint();
