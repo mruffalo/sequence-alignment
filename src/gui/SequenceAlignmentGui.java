@@ -48,7 +48,8 @@ public class SequenceAlignmentGui extends JFrame
 		Insets two = new Insets(2, 2, 2, 2);
 		gbc.insets = two;
 		gbc.weightx = 0.4;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.ipady = 20;
+		gbc.fill = GridBagConstraints.BOTH;
 		panel.add(getSequencesPanel(), gbc);
 		
 		gbc.gridx = 1;
