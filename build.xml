@@ -69,7 +69,7 @@
 		<replace file="${version.file}" token="!!VERSION_NUMBER!!" value="${version.number}"/>
 	</target>
 
-	<target name="jar" description="create jar file" depends="generate-manifest">
+	<target name="jar" description="create jar file" depends="generate-manifest, generate-java-version">
 		<antcall target="clean"/>
 		<antcall target="build"/>
 		<mkdir dir="${distrib}"/>
