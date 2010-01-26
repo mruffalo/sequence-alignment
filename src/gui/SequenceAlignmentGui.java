@@ -3,6 +3,7 @@ package gui;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
+import utils.LicenseUtil;
 import alignment.AlignmentCalculator;
 import alignment.AlignmentScoringSystem;
 import java.awt.Component;
@@ -466,6 +467,7 @@ public class SequenceAlignmentGui extends JFrame
 	 */
 	public static void main(String[] args)
 	{
+		LicenseUtil.printLicense();
 		new SequenceAlignmentGui();
 	}
 }

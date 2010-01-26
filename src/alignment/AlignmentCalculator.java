@@ -1,5 +1,7 @@
 package alignment;
 
+import utils.LicenseUtil;
+
 public class AlignmentCalculator
 {
 	private String x;
@@ -223,6 +225,7 @@ public class AlignmentCalculator
 	 */
 	public static void main(String[] args)
 	{
+		LicenseUtil.printLicense();
 		AlignmentScoringSystem scoring = new AlignmentScoringSystem(0, -1, 2, -1);
 		AlignmentCalculator nw1 = new AlignmentCalculator(args[0], args[1], scoring, false);
 		nw1.fillScoreArray();
