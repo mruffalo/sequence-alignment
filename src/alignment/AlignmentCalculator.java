@@ -7,6 +7,10 @@ public class AlignmentCalculator
 	private AlignmentElement[][] a;
 	private AlignmentElement[][] n;
 	private AlignmentElement[][] w;
+	/**
+	 * Used for local alignment printing
+	 */
+	private AlignmentElement highest;
 	private String xalig, align, yalig;
 	private boolean local;
 	private AlignmentScoringSystem scoring;
@@ -22,11 +26,12 @@ public class AlignmentCalculator
 		{
 			for (int i = 0; i <= x.length(); i++)
 			{
-				a[j][i] = new AlignmentElement(null);
-				n[j][i] = new AlignmentElement(null);
-				w[j][i] = new AlignmentElement(null);
+				a[j][i] = new AlignmentElement(j, i, null);
+				n[j][i] = new AlignmentElement(j, i, null);
+				w[j][i] = new AlignmentElement(j, i, null);
 			}
 		}
+		highest = a[0][0];
 		local = local_;
 		scoring = scoring_;
 	}
@@ -95,7 +100,7 @@ public class AlignmentCalculator
 	
 	public void print3(Double score)
 	{
-		String string = String.format("$%3d$ & ", score);
+		String string = String.format("$%03.0f$ & ", score);
 		if (string.length() == 8)
 		{
 			System.out.print(string);
