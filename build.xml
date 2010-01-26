@@ -47,7 +47,11 @@
 	</target>
 
 	<target name="get-version">
-		<loadfile property="version.number" srcFile="${src}/version.txt"/>
+		<loadfile property="version.number" srcFile="${src}/version.txt">
+			<filterchain>
+				<trim/>
+			</filterchain>
+		</loadfile>
 		<echo message="Software version ${version.number}"/>
 	</target>
 
@@ -56,6 +60,8 @@
 		<replace file="${manifest.file}" token="!!MAIN_CLASS!!" value="${main.class}"/>
 		<replace file="${manifest.file}" token="!!HEAD_REVISION!!" value="${head.revision}"/>
 		<replace file="${manifest.file}" token="!!VERSION_NUMBER!!" value="${version.number}"/>
+		<replace file="${manifest.file}" token="!!PROJECT_DESCRIPTION!!" value="${project.description}"/>
+		<replace file="${manifest.file}" token="!!PROJECT_NAME!!" value="${project.name}"/>
 	</target>
 
 	<target name="generate-java-version" depends="git-rev-parse, get-version">
