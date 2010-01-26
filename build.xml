@@ -7,8 +7,7 @@
 	<property name="distrib" location="distrib"/>
 	<property name="manifest.template" location="${src}/manifest.template"/>
 	<property name="manifest.file" location="${src}/MANIFEST.MF"/>
-	<property name="version.template" location="${src}/utils/VersionInfo.template"/>
-	<property name="version.file" location="${src}/utils/VersionInfo.java"/>
+	<property name="version.properties.file" location="${src}/utils/version.properties"/>
 	<property name="main.class" value="gui.SequenceAlignmentGui"/>
 
 	<target name="init">
@@ -47,29 +46,22 @@
 	</target>
 
 	<target name="get-version">
-		<loadfile property="version.number" srcFile="${src}/version.txt">
-			<filterchain>
-				<trim/>
-			</filterchain>
-		</loadfile>
-		<echo message="Software version ${version.number}"/>
+		<loadproperties>
+			<file file="${version.properties.file}"/>
+		</loadproperties>
+		<echo message="Software version ${software.version}"/>
 	</target>
 
 	<target name="generate-manifest" depends="git-rev-parse, get-version">
 		<copy file="${manifest.template}" tofile="${manifest.file}" overwrite="true"/>
 		<replace file="${manifest.file}" token="!!MAIN_CLASS!!" value="${main.class}"/>
 		<replace file="${manifest.file}" token="!!HEAD_REVISION!!" value="${head.revision}"/>
-		<replace file="${manifest.file}" token="!!VERSION_NUMBER!!" value="${version.number}"/>
+		<replace file="${manifest.file}" token="!!VERSION_NUMBER!!" value="${software.version}"/>
 		<replace file="${manifest.file}" token="!!PROJECT_DESCRIPTION!!" value="${project.description}"/>
 		<replace file="${manifest.file}" token="!!PROJECT_NAME!!" value="${project.name}"/>
 	</target>
 
-	<target name="generate-java-version" depends="git-rev-parse, get-version">
-		<copy file="${version.template}" tofile="${version.file}" overwrite="true"/>
-		<replace file="${version.file}" token="!!VERSION_NUMBER!!" value="${version.number}"/>
-	</target>
-
-	<target name="jar" description="create jar file" depends="generate-manifest, generate-java-version">
+	<target name="jar" description="create jar file" depends="generate-manifest">
 		<antcall target="clean"/>
 		<antcall target="build"/>
 		<mkdir dir="${distrib}"/>
