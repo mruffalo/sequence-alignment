@@ -94,6 +94,11 @@ public class AlignmentCalculator
 				}
 				a[row][col].score = best;
 				a[row][col].direction = dir;
+				
+				if (a[row][col].score >= highest.score)
+				{
+					highest = a[row][col];
+				}
 			}
 		}
 	}
@@ -168,6 +173,7 @@ public class AlignmentCalculator
 	
 	public void printAlignment()
 	{
+		System.err.printf("Highest value: %.0f (row %d, col %d)%n", highest.score, highest.row, highest.col);
 		System.out.println(xalig);
 		System.out.println(align);
 		System.out.println(yalig);
