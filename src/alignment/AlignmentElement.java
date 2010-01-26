@@ -5,15 +5,15 @@ package alignment;
 
 public class AlignmentElement
 {
-	public Integer score;
+	public Double score;
 	public PointerDirection direction;
 	
-	public AlignmentElement(Integer score_)
+	public AlignmentElement(Double score_)
 	{
 		score = score_;
 	}
 	
-	public AlignmentElement(Integer score_, PointerDirection direction_)
+	public AlignmentElement(Double score_, PointerDirection direction_)
 	{
 		score = score_;
 		direction = direction_;

@@ -16,6 +16,8 @@ public class AlignmentCalculator
 		x = s1;
 		y = s2;
 		a = new AlignmentElement[y.length() + 1][x.length() + 1];
+		n = new AlignmentElement[y.length() + 1][x.length() + 1];
+		w = new AlignmentElement[y.length() + 1][x.length() + 1];
 		for (int j = 0; j <= y.length(); j++)
 		{
 			for (int i = 0; i <= x.length(); i++)
@@ -32,34 +34,39 @@ public class AlignmentCalculator
 	public void fillScoreArray()
 	{
 		int col, row;
-		int northwest, north, west;
-		int best;
+		double northwest;
+		double west;
+		double north;
+		double best;
 		PointerDirection dir;
-		a[0][0].score = 0;
+		a[0][0].score = 0.0;
 		for (col = 1; col <= x.length(); col++)
 		{
 			a[0][col].score = localScore(scoring.gapContinue * col);
 			a[0][col].direction = PointerDirection.WEST;
 			// This isn't negative infinity, but it's close enough for our purposes
-			n[0][col].score = Integer.MIN_VALUE;
+			n[0][col].score = Double.NEGATIVE_INFINITY;
 		}
 		for (row = 1; row <= y.length(); row++)
 		{
 			a[row][0].score = localScore(scoring.gapContinue * row);
 			a[row][0].direction = PointerDirection.NORTH;
 			// This isn't negative infinity, but it's close enough for our purposes
-			w[row][0].score = Integer.MIN_VALUE;
+			w[row][0].score = Double.NEGATIVE_INFINITY;
 		}
 		for (row = 1; row <= y.length(); row++)
 		{
 			for (col = 1; col <= x.length(); col++)
 			{
 				// N
-				
+				double from_a = localScore(a[row - 1][col].score + scoring.gapStart + scoring.gapContinue);
+				double from_n = localScore(n[row - 1][col].score + scoring.gapContinue);
+				north = n[row][col].score = Math.max(from_a, from_n);
 				// W
-				
+				from_a = localScore(a[row][col - 1].score + scoring.gapStart + scoring.gapContinue);
+				double from_w = localScore(w[row][col - 1].score + scoring.gapContinue);
+				west = w[row][col].score = Math.max(from_a, from_w);
 				// A
-				
 				if (x.charAt(col - 1) == y.charAt(row - 1))
 				{
 					northwest = localScore(a[row - 1][col - 1].score + scoring.match);
@@ -68,8 +75,6 @@ public class AlignmentCalculator
 				{
 					northwest = localScore(a[row - 1][col - 1].score + scoring.mismatch);
 				}
-				west = localScore(a[row][col - 1].score + scoring.gapContinue);
-				north = localScore(a[row - 1][col].score + scoring.gapContinue);
 				best = northwest;
 				dir = PointerDirection.NORTHWEST;
 				if (north > best)
@@ -88,9 +93,9 @@ public class AlignmentCalculator
 		}
 	}
 	
-	public void print3(int x)
+	public void print3(Double score)
 	{
-		String string = String.format("$%3d$ & ", x);
+		String string = String.format("$%3d$ & ", score);
 		if (string.length() == 8)
 		{
 			System.out.print(string);
@@ -178,12 +183,12 @@ public class AlignmentCalculator
 		return sb.toString();
 	}
 	
-	public int getValue(int i, int j)
+	public double getValue(int i, int j)
 	{
 		return a[j][i].score;
 	}
 	
-	private int localScore(int i)
+	private double localScore(double i)
 	{
 		return (local && i < 0) ? 0 : i;
 	}
