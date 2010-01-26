@@ -304,10 +304,8 @@ public class SequenceAlignmentGui extends JFrame
 		alignArea = new JTextArea();
 		alignArea.setRows(3);
 		alignArea.setEditable(false);
-		Font f = Font.decode(Font.MONOSPACED);
-		System.out.println(f);
 		alignArea.setAlignmentX(CENTER_ALIGNMENT);
-		alignArea.setFont(f);
+		alignArea.setFont(Font.decode(Font.MONOSPACED));
 		panel.add(alignArea, gbc);
 		
 		return panel;
