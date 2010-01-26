@@ -49,14 +49,12 @@ public class AlignmentCalculator
 		{
 			a[0][col].score = localScore(scoring.gapContinue * col);
 			a[0][col].direction = PointerDirection.WEST;
-			// This isn't negative infinity, but it's close enough for our purposes
 			n[0][col].score = Double.NEGATIVE_INFINITY;
 		}
 		for (row = 1; row <= y.length(); row++)
 		{
 			a[row][0].score = localScore(scoring.gapContinue * row);
 			a[row][0].direction = PointerDirection.NORTH;
-			// This isn't negative infinity, but it's close enough for our purposes
 			w[row][0].score = Double.NEGATIVE_INFINITY;
 		}
 		for (row = 1; row <= y.length(); row++)
@@ -128,38 +126,48 @@ public class AlignmentCalculator
 		}
 	}
 	
-	/**
-	 * XXX: Fix this for local alignment
-	 */
 	public void setAlignment()
 	{
-		int row = y.length();
-		int col = x.length();
+		int row = local ? highest.row : y.length();
+		int col = local ? highest.col : x.length();
 		StringBuilder xb = new StringBuilder();
+		xb.append(x.substring(col).toLowerCase());
 		StringBuilder ab = new StringBuilder();
 		StringBuilder yb = new StringBuilder();
+		yb.append(y.substring(row).toLowerCase());
+		char gapChar;
+		char matchChar;
+		char mismatchChar;
+		boolean passedZero = false;
 		while ((col > 0) || (row > 0))
 		{
 			PointerDirection dir = a[row][col].direction;
+			if (a[row][col].score <= 0.0 && local)
+			{
+				passedZero = true;
+			}
+			gapChar = passedZero ? ' ' : '-';
+			matchChar = passedZero ? ' ' : '|';
+			mismatchChar = passedZero ? ' ' : 'X';
 			switch (dir)
 			{
 				case NORTH:
-					xb.insert(0, "-");
-					ab.insert(0, "-");
-					yb.insert(0, localChar(y.charAt(row - 1), row, col));
+					xb.insert(0, gapChar);
+					ab.insert(0, gapChar);
+					yb.insert(0, localChar(y.charAt(row - 1), passedZero, row, col));
 					row--;
 					break;
 				case WEST:
-					xb.insert(0, localChar(x.charAt(col - 1), row, col));
-					ab.insert(0, "-");
-					yb.insert(0, "-");
+					xb.insert(0, localChar(x.charAt(col - 1), passedZero, row, col));
+					ab.insert(0, gapChar);
+					yb.insert(0, gapChar);
 					col--;
 					break;
 				case NORTHWEST:
 					char xc = x.charAt(col - 1);
 					char yc = y.charAt(row - 1);
 					xb.insert(0, xc);
-					ab.insert(0, (xc == yc) ? "|" : "X");
+					ab.insert(0, (xc == yc) ? matchChar : mismatchChar);
 					yb.insert(0, yc);
 					col--;
 					row--;
@@ -174,6 +182,7 @@ public class AlignmentCalculator
 	public void printAlignment()
 	{
 		System.err.printf("Highest value: %.0f (row %d, col %d)%n", highest.score, highest.row, highest.col);
+		System.err.flush();
 		System.out.println(xalig);
 		System.out.println(align);
 		System.out.println(yalig);
@@ -204,16 +213,9 @@ public class AlignmentCalculator
 		return (local && i < 0) ? 0 : i;
 	}
 	
-	private char localChar(char c, int row, int col)
+	private char localChar(char c, boolean passedZero, int row, int col)
 	{
-		if (row > highest.row || col > highest.col)
-		{
-			return Character.toLowerCase(c);
-		}
-		else
-		{
-			return c;
-		}
+		return (local && (row > highest.row || col > highest.col || passedZero)) ? Character.toLowerCase(c) : c;
 	}
 	
 	/**
