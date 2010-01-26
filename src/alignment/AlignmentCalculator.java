@@ -146,11 +146,11 @@ public class AlignmentCalculator
 				case NORTH:
 					xb.insert(0, "-");
 					ab.insert(0, "-");
-					yb.insert(0, y.charAt(row - 1));
+					yb.insert(0, localChar(y.charAt(row - 1), row, col));
 					row--;
 					break;
 				case WEST:
-					xb.insert(0, x.charAt(col - 1));
+					xb.insert(0, localChar(x.charAt(col - 1), row, col));
 					ab.insert(0, "-");
 					yb.insert(0, "-");
 					col--;
@@ -202,6 +202,18 @@ public class AlignmentCalculator
 	private double localScore(double i)
 	{
 		return (local && i < 0) ? 0 : i;
+	}
+	
+	private char localChar(char c, int row, int col)
+	{
+		if (row > highest.row || col > highest.col)
+		{
+			return Character.toLowerCase(c);
+		}
+		else
+		{
+			return c;
+		}
 	}
 	
 	/**
