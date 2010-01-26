@@ -21,6 +21,8 @@ public class AlignmentCalculator
 			for (int i = 0; i <= x.length(); i++)
 			{
 				a[j][i] = new AlignmentElement(null);
+				n[j][i] = new AlignmentElement(null);
+				w[j][i] = new AlignmentElement(null);
 			}
 		}
 		local = local_;
@@ -38,16 +40,26 @@ public class AlignmentCalculator
 		{
 			a[0][col].score = localScore(scoring.gapContinue * col);
 			a[0][col].direction = PointerDirection.WEST;
+			// This isn't negative infinity, but it's close enough for our purposes
+			n[0][col].score = Integer.MIN_VALUE;
 		}
 		for (row = 1; row <= y.length(); row++)
 		{
 			a[row][0].score = localScore(scoring.gapContinue * row);
 			a[row][0].direction = PointerDirection.NORTH;
+			// This isn't negative infinity, but it's close enough for our purposes
+			w[row][0].score = Integer.MIN_VALUE;
 		}
 		for (row = 1; row <= y.length(); row++)
 		{
 			for (col = 1; col <= x.length(); col++)
 			{
+				// N
+				
+				// W
+				
+				// A
+				
 				if (x.charAt(col - 1) == y.charAt(row - 1))
 				{
 					northwest = localScore(a[row - 1][col - 1].score + scoring.match);
