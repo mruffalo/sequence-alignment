@@ -1,7 +1,5 @@
 package alignment;
 
-import utils.LicenseUtil;
-
 public class AlignmentCalculator
 {
 	private String x;
@@ -105,8 +103,8 @@ public class AlignmentCalculator
 	
 	public void print3(Double score)
 	{
-		String string = String.format("$%03.0f$ & ", score);
-		if (string.length() == 8)
+		String string = String.format("%03.0f, ", score);
+		if (string.length() <= 8)
 		{
 			System.out.print(string);
 		}
@@ -118,11 +116,24 @@ public class AlignmentCalculator
 	
 	public void printArray()
 	{
-		for (int row = 0; row < a.length; row++)
+		System.out.print("         ");
+		for (int col = 0; col < x.length(); col++)
 		{
-			for (int col = 0; col < a[row].length; col++)
+			System.out.printf("%5s", x.charAt(col));
+		}
+		System.out.println();
+		System.out.print("     ");
+		for (int col = 0; col < a[0].length; col++)
+		{
+			System.out.printf("%4.0f,", a[0][col].score);
+		}
+		System.out.println();
+		for (int row = 1; row < a.length; row++)
+		{
+			System.out.printf("%5s", y.charAt(row - 1));
+			for (int col = 0; col < a[row - 1].length; col++)
 			{
-				print3(a[row][col].score);
+				System.out.printf("%4.0f,", a[row][col].score);
 			}
 			System.out.println();
 		}
@@ -224,13 +235,13 @@ public class AlignmentCalculator
 	 */
 	public static void main(String[] args)
 	{
-		LicenseUtil.printLicense();
 		AlignmentScoringSystem scoring = new AlignmentScoringSystem(0, -1, 2, -1);
-		AlignmentCalculator nw1 = new AlignmentCalculator(args[0], args[1], scoring, false);
-		nw1.local = true;
-		nw1.fillScoreArray();
-		nw1.printArray();
-		nw1.setAlignment();
-		nw1.printAlignment();
+		AlignmentCalculator ac = new AlignmentCalculator(args[0], args[1], scoring, false);
+		ac.local = true;
+		ac.fillScoreArray();
+		ac.printArray();
+		System.out.println();
+		ac.setAlignment();
+		ac.printAlignment();
 	}
 }
