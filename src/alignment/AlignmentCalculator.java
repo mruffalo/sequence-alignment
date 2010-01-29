@@ -166,8 +166,8 @@ public class AlignmentCalculator
 					col--;
 					break;
 				case NORTHWEST:
-					char xc = x.charAt(col - 1);
-					char yc = y.charAt(row - 1);
+					char xc = localChar(x.charAt(col - 1), passedZero, row, col);
+					char yc = localChar(y.charAt(row - 1), passedZero, row, col);
 					xb.insert(0, xc);
 					ab.insert(0, (xc == yc) ? matchChar : mismatchChar);
 					yb.insert(0, yc);
@@ -183,7 +183,6 @@ public class AlignmentCalculator
 	
 	public void printAlignment()
 	{
-		System.err.printf("Highest value: %.0f (row %d, col %d)%n", highest.score, highest.row, highest.col);
 		System.err.flush();
 		System.out.println(xalig);
 		System.out.println(align);
@@ -228,6 +227,7 @@ public class AlignmentCalculator
 		LicenseUtil.printLicense();
 		AlignmentScoringSystem scoring = new AlignmentScoringSystem(0, -1, 2, -1);
 		AlignmentCalculator nw1 = new AlignmentCalculator(args[0], args[1], scoring, false);
+		nw1.local = true;
 		nw1.fillScoreArray();
 		nw1.printArray();
 		nw1.setAlignment();
