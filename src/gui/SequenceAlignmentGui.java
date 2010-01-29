@@ -42,6 +42,7 @@ public class SequenceAlignmentGui extends JFrame
 	{
 		super("Sequence Alignment");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setJMenuBar(createMenuBar());
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		
@@ -51,18 +52,18 @@ public class SequenceAlignmentGui extends JFrame
 		gbc.weightx = 0.4;
 		gbc.ipady = 20;
 		gbc.fill = GridBagConstraints.BOTH;
-		panel.add(getSequencesPanel(), gbc);
+		panel.add(createSequencesPanel(), gbc);
 		
 		gbc.gridx = 1;
 		gbc.weightx = 0.6;
-		panel.add(getScoringPanel(), gbc);
+		panel.add(createScoringPanel(), gbc);
 		
 		gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.gridwidth = 2;
 		gbc.gridy = 1;
 		gbc.weightx = 1.0;
-		panel.add(getSettingsPanel(), gbc);
+		panel.add(createSettingsPanel(), gbc);
 		
 		gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
@@ -71,21 +72,50 @@ public class SequenceAlignmentGui extends JFrame
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		gbc.insets = two;
-		panel.add(getTable(), gbc);
+		panel.add(createTable(), gbc);
 		
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 2;
 		gbc.gridy = 3;
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-		panel.add(getAlignmentPanel(), gbc);
+		panel.add(createAlignmentPanel(), gbc);
 		
 		this.add(panel);
 		this.pack();
 		this.setVisible(true);
 	}
 	
-	private JComponent getSequencesPanel()
+	/**
+	 * TODO: Externalize strings
+	 * 
+	 * @return
+	 */
+	private JMenuBar createMenuBar()
+	{
+		JMenuBar bar = new JMenuBar();
+		JMenuItem item;
+		JMenu menu;
+		
+		menu = new JMenu("Alignment");
+		item = new JMenuItem("Export...");
+		menu.add(item);
+		menu.addSeparator();
+		item = new JMenuItem("Exit");
+		item.addActionListener(new ExitActionListener());
+		menu.add(item);
+		bar.add(menu);
+		
+		menu = new JMenu("Help");
+		item = new JMenuItem("About...");
+		item.addActionListener(new AboutBoxActionListener(this));
+		menu.add(item);
+		bar.add(menu);
+		
+		return bar;
+	}
+	
+	private JComponent createSequencesPanel()
 	{
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createTitledBorder("Sequences"));
@@ -112,7 +142,7 @@ public class SequenceAlignmentGui extends JFrame
 		return panel;
 	}
 	
-	private JComponent getScoringPanel()
+	private JComponent createScoringPanel()
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
@@ -190,7 +220,7 @@ public class SequenceAlignmentGui extends JFrame
 		return panel;
 	}
 	
-	private JComponent getSettingsPanel()
+	private JComponent createSettingsPanel()
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
@@ -278,7 +308,7 @@ public class SequenceAlignmentGui extends JFrame
 		return panel;
 	}
 	
-	private JComponent getTable()
+	private JComponent createTable()
 	{
 		tableModel = new AlignmentTableModel();
 		table = new JTable(tableModel);
@@ -295,7 +325,7 @@ public class SequenceAlignmentGui extends JFrame
 		return scrollPane;
 	}
 	
-	private JComponent getAlignmentPanel()
+	private JComponent createAlignmentPanel()
 	{
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -333,6 +363,8 @@ public class SequenceAlignmentGui extends JFrame
 		AlignmentScoringSystem scoring = new AlignmentScoringSystem(gapStart, gapContinue, match, mismatch);
 		alignment = new AlignmentCalculator(sequence1, sequence2, scoring, local);
 		alignment.fillScoreArray();
+		System.out.println();
+		alignment.printArray();
 		alignment.setAlignment();
 		alignArea.setText(alignment.getAlignment());
 		alignment.printAlignment();
@@ -459,6 +491,34 @@ public class SequenceAlignmentGui extends JFrame
 		{
 			setText((value == null) ? "" : value.toString());
 			return this;
+		}
+	}
+	
+	private class ExitActionListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent arg0)
+		{
+			System.exit(0);
+		}
+	}
+	
+	private static class AboutBoxActionListener implements ActionListener
+	{
+		/**
+		 * TODO: Improve handling/passing of this reference
+		 */
+		private final SequenceAlignmentGui sequenceAlignmentGui;
+		
+		public AboutBoxActionListener(SequenceAlignmentGui sequenceAlignmentGui_)
+		{
+			sequenceAlignmentGui = sequenceAlignmentGui_;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			new AboutFrame(sequenceAlignmentGui);
 		}
 	}
 	
