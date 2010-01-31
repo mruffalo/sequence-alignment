@@ -99,6 +99,7 @@ public class SequenceAlignmentGui extends JFrame
 		
 		menu = new JMenu("Alignment");
 		item = new JMenuItem("Export...");
+		item.addActionListener(new ExportAlignmentActionListener(this));
 		menu.add(item);
 		menu.addSeparator();
 		item = new JMenuItem("Exit");
@@ -519,6 +520,26 @@ public class SequenceAlignmentGui extends JFrame
 		public void actionPerformed(ActionEvent e)
 		{
 			new AboutFrame(sequenceAlignmentGui);
+		}
+	}
+	
+	private static class ExportAlignmentActionListener implements ActionListener
+	{/**
+		 * TODO: Improve handling/passing of this reference
+		 */
+		private final SequenceAlignmentGui sequenceAlignmentGui;
+		
+		public ExportAlignmentActionListener(SequenceAlignmentGui sequenceAlignmentGui_)
+		{
+			sequenceAlignmentGui = sequenceAlignmentGui_;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			JFileChooser jfc = new JFileChooser();
+			jfc.showSaveDialog(sequenceAlignmentGui);
+			System.out.println(jfc.getSelectedFile());
 		}
 	}
 	
