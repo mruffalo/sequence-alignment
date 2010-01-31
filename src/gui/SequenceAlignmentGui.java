@@ -524,7 +524,8 @@ public class SequenceAlignmentGui extends JFrame
 	}
 	
 	private static class ExportAlignmentActionListener implements ActionListener
-	{/**
+	{
+		/**
 		 * TODO: Improve handling/passing of this reference
 		 */
 		private final SequenceAlignmentGui sequenceAlignmentGui;
