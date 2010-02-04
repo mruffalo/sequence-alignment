@@ -50,7 +50,6 @@ public class SequenceAlignmentGui extends JFrame
 		Insets two = new Insets(2, 2, 2, 2);
 		gbc.insets = two;
 		gbc.weightx = 0.4;
-		gbc.ipady = 20;
 		gbc.fill = GridBagConstraints.BOTH;
 		panel.add(createSequencesPanel(), gbc);
 		
@@ -218,6 +217,7 @@ public class SequenceAlignmentGui extends JFrame
 		gbc.weightx = 0.6;
 		panel.add(gapContinueSpinner, gbc);
 		
+		panel.setMinimumSize(panel.getPreferredSize());
 		return panel;
 	}
 	
