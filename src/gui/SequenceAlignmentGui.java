@@ -6,6 +6,7 @@ import javax.swing.table.JTableHeader;
 import utils.LicenseUtil;
 import alignment.AlignmentCalculator;
 import alignment.AlignmentScoringSystem;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -315,6 +316,7 @@ public class SequenceAlignmentGui extends JFrame
 	{
 		tableModel = new AlignmentTableModel();
 		table = new JTable(tableModel);
+		table.setDefaultRenderer(Object.class, new TableCellColorRenderer(Color.GREEN));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		rowHeader = new JList(new Sequence2ListModel());
