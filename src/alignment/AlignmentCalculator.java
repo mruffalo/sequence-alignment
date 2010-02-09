@@ -43,6 +43,7 @@ public class AlignmentCalculator
 			}
 		}
 		highest = a[0][0];
+		a[y.length()][x.length()].isPartOfAlignment = true;
 		local = local_;
 		scoring = scoring_;
 	}
@@ -170,6 +171,7 @@ public class AlignmentCalculator
 			{
 				passedZero = true;
 			}
+			a[row][col].isPartOfAlignment = isPartOfAlignment(passedZero, row, col);
 			gapChar = passedZero ? ' ' : '-';
 			matchChar = passedZero ? ' ' : '|';
 			mismatchChar = passedZero ? ' ' : 'X';
@@ -227,15 +229,15 @@ public class AlignmentCalculator
 	}
 	
 	/**
-	 * @param i
+	 * @param column
 	 *            Column index
-	 * @param j
+	 * @param row
 	 *            Row index
 	 * @return
 	 */
-	public double getValue(int i, int j)
+	public double getValue(int row, int column)
 	{
-		return a[j][i].score;
+		return a[row][column].score;
 	}
 	
 	public boolean isPartOfAlignment(int i, int j)
@@ -250,7 +252,12 @@ public class AlignmentCalculator
 	
 	private char localChar(char c, boolean passedZero, int row, int col)
 	{
-		return (local && (row > highest.row || col > highest.col || passedZero)) ? Character.toLowerCase(c) : c;
+		return isPartOfAlignment(passedZero, row, col) ? c : Character.toLowerCase(c);
+	}
+	
+	private boolean isPartOfAlignment(boolean passedZero, int row, int col)
+	{
+		return !(local && (row > highest.row || col > highest.col || passedZero));
 	}
 	
 	public void exportToFile(File file) throws IOException

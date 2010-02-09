@@ -3,6 +3,7 @@ package gui;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import utils.LicenseUtil;
 import alignment.AlignmentCalculator;
 import alignment.AlignmentScoringSystem;
@@ -39,7 +40,7 @@ public class SequenceAlignmentGui extends JFrame
 	private String sequence2 = "";
 	private JList rowHeader;
 	private JTextArea alignArea;
-	private AlignmentCalculator alignment;
+	AlignmentCalculator alignment;
 	
 	public SequenceAlignmentGui()
 	{
@@ -316,7 +317,7 @@ public class SequenceAlignmentGui extends JFrame
 	{
 		tableModel = new AlignmentTableModel();
 		table = new JTable(tableModel);
-		table.setDefaultRenderer(Object.class, new TableCellColorRenderer(Color.GREEN));
+		table.setDefaultRenderer(Object.class, new TableCellColorRenderer(this, Color.GREEN));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		rowHeader = new JList(new Sequence2ListModel());
