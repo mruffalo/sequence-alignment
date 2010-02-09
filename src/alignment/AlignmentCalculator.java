@@ -210,7 +210,6 @@ public class AlignmentCalculator
 	
 	public void printAlignment()
 	{
-		System.err.flush();
 		System.out.println(xalig);
 		System.out.println(align);
 		System.out.println(yalig);
