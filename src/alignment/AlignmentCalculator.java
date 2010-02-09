@@ -43,7 +43,6 @@ public class AlignmentCalculator
 			}
 		}
 		highest = a[0][0];
-		a[y.length()][x.length()].isPartOfAlignment = true;
 		local = local_;
 		scoring = scoring_;
 	}
@@ -200,6 +199,10 @@ public class AlignmentCalculator
 					break;
 			}
 		}
+		if (!local)
+		{
+			a[0][0].isPartOfAlignment = true;
+		}
 		xalig = xb.toString();
 		align = ab.toString();
 		yalig = yb.toString();
@@ -240,9 +243,9 @@ public class AlignmentCalculator
 		return a[row][column].score;
 	}
 	
-	public boolean isPartOfAlignment(int i, int j)
+	public boolean isPartOfAlignment(int row, int column)
 	{
-		return a[j][i].isPartOfAlignment;
+		return a[row][column].isPartOfAlignment;
 	}
 	
 	private double localScore(double i)

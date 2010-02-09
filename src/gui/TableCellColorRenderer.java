@@ -27,6 +27,7 @@ public class TableCellColorRenderer extends DefaultTableCellRenderer implements 
 		int row, int column)
 	{
 		JLabel template = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		System.err.printf("row %d, column %d%n", row, column);
 		if (sequenceAlignmentGui.alignment != null && sequenceAlignmentGui.alignment.isPartOfAlignment(row, column))
 		{
 			template.setBackground(specialBackground);

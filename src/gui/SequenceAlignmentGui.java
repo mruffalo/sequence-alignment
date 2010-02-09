@@ -403,7 +403,7 @@ public class SequenceAlignmentGui extends JFrame
 		{
 			if (alignment != null)
 			{
-				return String.format("%.0f", alignment.getValue(col, row));
+				return String.format("%.0f", alignment.getValue(row, col));
 			}
 			else
 			{
