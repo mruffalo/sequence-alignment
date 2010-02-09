@@ -238,6 +238,11 @@ public class AlignmentCalculator
 		return a[j][i].score;
 	}
 	
+	public boolean isPartOfAlignment(int i, int j)
+	{
+		return a[j][i].isPartOfAlignment;
+	}
+	
 	private double localScore(double i)
 	{
 		return (local && i < 0) ? 0 : i;

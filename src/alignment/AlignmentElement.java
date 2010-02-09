@@ -9,6 +9,7 @@ public class AlignmentElement
 	public final int col;
 	public Double score;
 	public PointerDirection direction;
+	public boolean isPartOfAlignment = false;
 	
 	public AlignmentElement(int row_, int col_, Double score_)
 	{
