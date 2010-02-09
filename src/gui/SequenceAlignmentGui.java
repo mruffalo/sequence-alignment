@@ -3,7 +3,6 @@ package gui;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import utils.LicenseUtil;
 import alignment.AlignmentCalculator;
 import alignment.AlignmentScoringSystem;
