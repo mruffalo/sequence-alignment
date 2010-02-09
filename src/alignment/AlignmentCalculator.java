@@ -1,7 +1,18 @@
 package alignment;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class AlignmentCalculator
 {
+	final static String ENTRY_SEPARATOR = ",";
+	final static String SCORE_DIRECTION_SEPARATOR = ";";
+	final static String NEWLINE = System.getProperty("line.separator");
+	public final static String NEEDLEMAN_WUNCH = "Needleman-Wunch";
+	public final static String SMITH_WATERMAN = "Smith-Waterman";
+	
 	private String x;
 	private String y;
 	private AlignmentElement[][] a;
@@ -215,6 +226,13 @@ public class AlignmentCalculator
 		return sb.toString();
 	}
 	
+	/**
+	 * @param i
+	 *            Column index
+	 * @param j
+	 *            Row index
+	 * @return
+	 */
 	public double getValue(int i, int j)
 	{
 		return a[j][i].score;
@@ -228,6 +246,53 @@ public class AlignmentCalculator
 	private char localChar(char c, boolean passedZero, int row, int col)
 	{
 		return (local && (row > highest.row || col > highest.col || passedZero)) ? Character.toLowerCase(c) : c;
+	}
+	
+	public void exportToFile(File file) throws IOException
+	{
+		BufferedWriter w = new BufferedWriter(new FileWriter(file));
+		w.write("# Data format:");
+		w.write(NEWLINE);
+		w.write("# entry = score");
+		w.write(SCORE_DIRECTION_SEPARATOR);
+		w.write("direction");
+		w.write(NEWLINE);
+		w.write("# entry_list = entry_list[");
+		w.write(ENTRY_SEPARATOR);
+		w.write("entry]");
+		w.write(NEWLINE);
+		w.write("# Horizontal string: ");
+		w.write(x);
+		w.write(NEWLINE);
+		w.write("# Vertical string: ");
+		w.write(y);
+		w.write(NEWLINE);
+		w.write("# ");
+		w.write(local ? SMITH_WATERMAN : NEEDLEMAN_WUNCH);
+		w.write(" alignment:");
+		w.write(NEWLINE);
+		w.write("# ");
+		w.write(xalig);
+		w.write(NEWLINE);
+		w.write("# ");
+		w.write(align);
+		w.write(NEWLINE);
+		w.write("# ");
+		w.write(yalig);
+		w.write(NEWLINE);
+		for (int row = 0; row <= y.length(); row++)
+		{
+			for (int col = 0; col <= x.length(); col++)
+			{
+				w.write(String.format("%.0f", a[row][col].score));
+				w.write(SCORE_DIRECTION_SEPARATOR);
+				String dir = a[row][col].direction == null ? "?" : a[row][col].direction.getShortDescription();
+				w.write(dir);
+				w.write(ENTRY_SEPARATOR);
+			}
+			w.write(NEWLINE);
+		}
+		w.close();
 	}
 	
 	/**

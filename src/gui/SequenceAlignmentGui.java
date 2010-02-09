@@ -13,6 +13,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 
 public class SequenceAlignmentGui extends JFrame
 {
@@ -234,7 +236,7 @@ public class SequenceAlignmentGui extends JFrame
 		alignmentTypeButtonGroup.add(nwButton);
 		panel.add(nwButton);
 		
-		JLabel nwLabel = new JLabel("Needleman-Wunch");
+		JLabel nwLabel = new JLabel(AlignmentCalculator.NEEDLEMAN_WUNCH);
 		nwLabel.addMouseListener(new MouseListener()
 		{
 			@Override
@@ -270,7 +272,7 @@ public class SequenceAlignmentGui extends JFrame
 		alignmentTypeButtonGroup.add(swButton);
 		panel.add(swButton);
 		
-		JLabel swLabel = new JLabel("Smith-Waterman");
+		JLabel swLabel = new JLabel(AlignmentCalculator.SMITH_WATERMAN);
 		swLabel.addMouseListener(new MouseListener()
 		{
 			@Override
@@ -536,11 +538,26 @@ public class SequenceAlignmentGui extends JFrame
 		}
 		
 		@Override
-		public void actionPerformed(ActionEvent e)
+		public void actionPerformed(ActionEvent ae)
 		{
 			JFileChooser jfc = new JFileChooser();
 			jfc.showSaveDialog(sequenceAlignmentGui);
-			System.out.println(jfc.getSelectedFile());
+			File file = jfc.getSelectedFile();
+			if (file != null)
+			{
+				try
+				{
+					sequenceAlignmentGui.alignment.exportToFile(jfc.getSelectedFile());
+					JOptionPane.showMessageDialog(sequenceAlignmentGui, "Export complete.");
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+					String message = String.format("Encountered an error while exporting alignment:%n%s",
+						e.getMessage());
+					JOptionPane.showMessageDialog(sequenceAlignmentGui, message, "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 		}
 	}
 	
