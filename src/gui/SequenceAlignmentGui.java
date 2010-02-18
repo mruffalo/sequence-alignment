@@ -40,6 +40,7 @@ public class SequenceAlignmentGui extends JFrame
 	private JList rowHeader;
 	private JTextArea alignArea;
 	AlignmentCalculator alignment;
+	private AlignmentDisplaySettings settings = new AlignmentDisplaySettings();
 	
 	public SequenceAlignmentGui()
 	{
@@ -101,7 +102,7 @@ public class SequenceAlignmentGui extends JFrame
 		
 		menu = new JMenu("Alignment");
 		item = new JMenuItem("Export...");
-		item.addActionListener(new ExportAlignmentActionListener(this));
+		item.addActionListener(new ExportAlignmentActionListener());
 		menu.add(item);
 		menu.addSeparator();
 		item = new JMenuItem("Exit");
@@ -109,9 +110,15 @@ public class SequenceAlignmentGui extends JFrame
 		menu.add(item);
 		bar.add(menu);
 		
+		menu = new JMenu("Settings");
+		item = new JMenuItem("Configure Alignment Display...");
+		item.addActionListener(new ShowSettingsDialogActionListener());
+		menu.add(item);
+		bar.add(menu);
+		
 		menu = new JMenu("Help");
 		item = new JMenuItem("About...");
-		item.addActionListener(new AboutBoxActionListener(this));
+		item.addActionListener(new AboutBoxActionListener());
 		menu.add(item);
 		bar.add(menu);
 		
@@ -316,7 +323,7 @@ public class SequenceAlignmentGui extends JFrame
 	{
 		tableModel = new AlignmentTableModel();
 		table = new JTable(tableModel);
-		table.setDefaultRenderer(Object.class, new TableCellColorRenderer(this, Color.GREEN));
+		setTableHighlightColor(settings.highlightColor);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		rowHeader = new JList(new Sequence2ListModel());
@@ -328,6 +335,11 @@ public class SequenceAlignmentGui extends JFrame
 		scrollPane.setRowHeaderView(rowHeader);
 		
 		return scrollPane;
+	}
+	
+	private void setTableHighlightColor(Color color)
+	{
+		table.setDefaultRenderer(Object.class, new TableCellColorRenderer(this, color));
 	}
 	
 	private JComponent createAlignmentPanel()
@@ -376,6 +388,17 @@ public class SequenceAlignmentGui extends JFrame
 		
 		rowHeader.repaint();
 		tableModel.fireTableStructureChanged();
+	}
+	
+	public AlignmentDisplaySettings getSettings()
+	{
+		return settings;
+	}
+	
+	public void setSettings(AlignmentDisplaySettings settings_)
+	{
+		settings = settings_;
+		setTableHighlightColor(settings.highlightColor);
 	}
 	
 	private class AlignmentTableModel extends AbstractTableModel
@@ -508,58 +531,48 @@ public class SequenceAlignmentGui extends JFrame
 		}
 	}
 	
-	private static class AboutBoxActionListener implements ActionListener
+	private class AboutBoxActionListener implements ActionListener
 	{
-		/**
-		 * TODO: Improve handling/passing of this reference
-		 */
-		private final SequenceAlignmentGui sequenceAlignmentGui;
-		
-		public AboutBoxActionListener(SequenceAlignmentGui sequenceAlignmentGui_)
-		{
-			sequenceAlignmentGui = sequenceAlignmentGui_;
-		}
-		
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			new AboutFrame(sequenceAlignmentGui);
+			new AboutFrame(SequenceAlignmentGui.this);
 		}
 	}
 	
-	private static class ExportAlignmentActionListener implements ActionListener
+	private class ExportAlignmentActionListener implements ActionListener
 	{
-		/**
-		 * TODO: Improve handling/passing of this reference
-		 */
-		private final SequenceAlignmentGui sequenceAlignmentGui;
-		
-		public ExportAlignmentActionListener(SequenceAlignmentGui sequenceAlignmentGui_)
-		{
-			sequenceAlignmentGui = sequenceAlignmentGui_;
-		}
-		
 		@Override
 		public void actionPerformed(ActionEvent ae)
 		{
 			JFileChooser jfc = new JFileChooser();
-			jfc.showSaveDialog(sequenceAlignmentGui);
+			jfc.showSaveDialog(SequenceAlignmentGui.this);
 			File file = jfc.getSelectedFile();
 			if (file != null)
 			{
 				try
 				{
-					sequenceAlignmentGui.alignment.exportToFile(jfc.getSelectedFile());
-					JOptionPane.showMessageDialog(sequenceAlignmentGui, "Export complete.");
+					SequenceAlignmentGui.this.alignment.exportToFile(jfc.getSelectedFile());
+					JOptionPane.showMessageDialog(SequenceAlignmentGui.this, "Export complete.");
 				}
 				catch (IOException e)
 				{
 					e.printStackTrace();
 					String message = String.format("Encountered an error while exporting alignment:%n%s",
 						e.getMessage());
-					JOptionPane.showMessageDialog(sequenceAlignmentGui, message, "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(SequenceAlignmentGui.this, message, "Error",
+						JOptionPane.ERROR_MESSAGE);
 				}
 			}
+		}
+	}
+	
+	private class ShowSettingsDialogActionListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent arg0)
+		{
+			new SettingsFrame(SequenceAlignmentGui.this);
 		}
 	}
 	
