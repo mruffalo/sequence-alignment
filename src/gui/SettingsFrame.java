@@ -123,7 +123,10 @@ public class SettingsFrame extends JFrame
 		{
 			String title = "Choose Highlight Color";
 			Color newColor = JColorChooser.showDialog(SettingsFrame.this, title, settings.highlightColor);
-			setColor(newColor);
+			if (newColor != null)
+			{
+				setColor(newColor);
+			}
 		}
 	}
 }
