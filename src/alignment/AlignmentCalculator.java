@@ -56,15 +56,27 @@ public class AlignmentCalculator
 		double best;
 		PointerDirection dir;
 		a[0][0].score = 0.0;
-		for (col = 1; col <= x.length(); col++)
+		if (x.length() >= 2)
 		{
-			a[0][col].score = localScore(scoring.gapContinue * col);
+			a[0][1].score = localScore(scoring.gapStart + scoring.gapContinue);
+			a[0][1].direction = PointerDirection.WEST;
+			n[0][1].score = Double.NEGATIVE_INFINITY;
+		}
+		if (y.length() >= 2)
+		{
+			a[1][0].score = localScore(scoring.gapStart + scoring.gapContinue);
+			a[1][0].direction = PointerDirection.NORTH;
+			w[1][0].score = Double.NEGATIVE_INFINITY;
+		}
+		for (col = 2; col <= x.length(); col++)
+		{
+			a[0][col].score = localScore(scoring.gapContinue * col + scoring.gapStart);
 			a[0][col].direction = PointerDirection.WEST;
 			n[0][col].score = Double.NEGATIVE_INFINITY;
 		}
-		for (row = 1; row <= y.length(); row++)
+		for (row = 2; row <= y.length(); row++)
 		{
-			a[row][0].score = localScore(scoring.gapContinue * row);
+			a[row][0].score = localScore(scoring.gapContinue * row + scoring.gapStart);
 			a[row][0].direction = PointerDirection.NORTH;
 			w[row][0].score = Double.NEGATIVE_INFINITY;
 		}
