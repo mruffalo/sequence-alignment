@@ -381,7 +381,7 @@ public class SequenceAlignmentGui extends JFrame
 		alignment = new AlignmentCalculator(sequence1, sequence2, scoring, local);
 		alignment.fillScoreArray();
 		System.out.println();
-		alignment.printArray();
+		alignment.printArrays();
 		alignment.setAlignment();
 		alignArea.setText(alignment.getAlignment());
 		alignment.printAlignment();

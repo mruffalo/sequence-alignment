@@ -137,7 +137,14 @@ public class AlignmentCalculator
 		}
 	}
 	
-	public void printArray()
+	public void printArrays()
+	{
+		printArrays(a, x, y);
+		printArrays(n, x, y);
+		printArrays(w, x, y);
+	}
+	
+	public static void printArrays(AlignmentElement[][] array, String x, String y)
 	{
 		System.out.print("         ");
 		for (int col = 0; col < x.length(); col++)
@@ -146,17 +153,17 @@ public class AlignmentCalculator
 		}
 		System.out.println();
 		System.out.print("     ");
-		for (int col = 0; col < a[0].length; col++)
+		for (int col = 0; col < array[0].length; col++)
 		{
-			System.out.printf("%4.0f,", a[0][col].score);
+			System.out.printf("%4.0f,", array[0][col].score);
 		}
 		System.out.println();
-		for (int row = 1; row < a.length; row++)
+		for (int row = 1; row < array.length; row++)
 		{
 			System.out.printf("%5s", y.charAt(row - 1));
-			for (int col = 0; col < a[row - 1].length; col++)
+			for (int col = 0; col < array[row - 1].length; col++)
 			{
-				System.out.printf("%4.0f,", a[row][col].score);
+				System.out.printf("%4.0f,", array[row][col].score);
 			}
 			System.out.println();
 		}
@@ -344,7 +351,7 @@ public class AlignmentCalculator
 		AlignmentCalculator ac = new AlignmentCalculator(args[0], args[1], scoring, false);
 		ac.local = true;
 		ac.fillScoreArray();
-		ac.printArray();
+		ac.printArrays();
 		System.out.println();
 		ac.setAlignment();
 		ac.printAlignment();
