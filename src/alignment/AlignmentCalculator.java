@@ -155,7 +155,12 @@ public class AlignmentCalculator
 		System.out.print("     ");
 		for (int col = 0; col < array[0].length; col++)
 		{
-			System.out.printf("%4.0f,", array[0][col].score);
+			String string = String.format("%5.0f", array[0][col].score);
+			if (array[0][col].score != null && Double.isInfinite(array[0][col].score))
+			{
+				string = "   -∞";
+			}
+			System.out.print(string);
 		}
 		System.out.println();
 		for (int row = 1; row < array.length; row++)
@@ -163,7 +168,12 @@ public class AlignmentCalculator
 			System.out.printf("%5s", y.charAt(row - 1));
 			for (int col = 0; col < array[row - 1].length; col++)
 			{
-				System.out.printf("%4.0f,", array[row][col].score);
+				String string = String.format("%5.0f", array[row][col].score);
+				if (array[row][col].score != null && Double.isInfinite(array[row][col].score))
+				{
+					string = "   -∞";
+				}
+				System.out.print(string);
 			}
 			System.out.println();
 		}
