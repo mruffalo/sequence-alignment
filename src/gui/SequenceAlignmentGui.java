@@ -204,6 +204,7 @@ public class SequenceAlignmentGui extends JFrame
 		
 		SpinnerNumberModel gapStartModel = new SpinnerNumberModel();
 		gapStartModel.setValue(0);
+		gapStartModel.setMaximum(0);
 		gapStartSpinner = new JSpinner(gapStartModel);
 		gapStartSpinner.setMinimumSize(new Dimension(50, 0));
 		gbc.gridx = 1;
